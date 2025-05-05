@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     serial->setStopBits(QSerialPort::OneStop);
     serial->setFlowControl(QSerialPort::NoFlowControl);
 
-    //Configuración del Plot
+    //Configuración del Plotter
     series = new QLineSeries();
     chart = new QChart();
     chart->legend()->hide();
@@ -62,10 +62,6 @@ void MainWindow::readSerialData() {
         QByteArray line = buffer.left(index).trimmed();  // quita \r si existe
         buffer.remove(0, index + 1);
 
-        if (line.startsWith("ADC:")) {
-            line = line.mid(4);  // elimina "ADC:"
-        }
-
         bool ok;
         int value = line.toInt(&ok);
         if (ok) {
@@ -79,7 +75,7 @@ void MainWindow::readSerialData() {
                 series->replace(puntos);
             }
 
-            int ventana = 1000;
+            int ventana = 1000; //Cantidad de datos que se visualizan en la ventana en el eje del tiempo
             if (x > ventana)
                 axisX->setRange(x - ventana, x);
             else

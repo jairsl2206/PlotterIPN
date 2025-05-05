@@ -17,34 +17,14 @@
    <widget class="QPushButton" name="connectButton">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>130</y>
+      <x>10</x>
+      <y>10</y>
       <width>121</width>
       <height>24</height>
      </rect>
     </property>
     <property name="text">
      <string>Conectar a STM32</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="textEdit">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>170</y>
-      <width>461</width>
-      <height>121</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLCDNumber" name="lcdNumber">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>330</y>
-      <width>281</width>
-      <height>51</height>
-     </rect>
     </property>
    </widget>
   </widget>

@@ -11,12 +11,10 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -26,8 +24,6 @@ class Ui_MainWindow
 public:
     QWidget *centralwidget;
     QPushButton *connectButton;
-    QTextEdit *textEdit;
-    QLCDNumber *lcdNumber;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -40,13 +36,7 @@ public:
         centralwidget->setObjectName("centralwidget");
         connectButton = new QPushButton(centralwidget);
         connectButton->setObjectName("connectButton");
-        connectButton->setGeometry(QRect(90, 130, 121, 24));
-        textEdit = new QTextEdit(centralwidget);
-        textEdit->setObjectName("textEdit");
-        textEdit->setGeometry(QRect(90, 170, 461, 121));
-        lcdNumber = new QLCDNumber(centralwidget);
-        lcdNumber->setObjectName("lcdNumber");
-        lcdNumber->setGeometry(QRect(190, 330, 281, 51));
+        connectButton->setGeometry(QRect(10, 10, 121, 24));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
