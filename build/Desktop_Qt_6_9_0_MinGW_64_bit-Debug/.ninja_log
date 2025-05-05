@@ -1,0 +1,22 @@
+# ninja log v6
+859	3883	7681236299847962	CMakeFiles/Charifas.dir/mainwindow.cpp.obj	60a7f8241c8356eb
+25	851	7681236298960546	Charifas_autogen/mocs_compilation.cpp	30d6e1e82c374470
+25	851	7681236298960546	Charifas_autogen/timestamp	30d6e1e82c374470
+855	3541	7681236299817248	CMakeFiles/Charifas.dir/main.cpp.obj	9b31f6f260b56922
+25	851	7681236298960546	C:/Users/Jair S/Documents/Charifas/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/Charifas_autogen/timestamp	30d6e1e82c374470
+25	851	7681236298960546	C:/Users/Jair S/Documents/Charifas/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/Charifas_autogen/mocs_compilation.cpp	30d6e1e82c374470
+852	3615	7681236299785810	CMakeFiles/Charifas.dir/Charifas_autogen/mocs_compilation.cpp.obj	e05a1a2244bd75af
+3884	4118	7681236330104714	Charifas.exe	38b2d7651de0fc65
+8	755	7681175722613279	build.ninja	46b66f2be8eb2fb1
+30	54	7681236290352123	CMakeFiles/clean.additional	baedbe210acaa455
+54	63	7681236290596577	clean	577b940aee94fbd7
+37	62	7681236840257427	CMakeFiles/clean.additional	baedbe210acaa455
+62	73	7681236840501850	clean	577b940aee94fbd7
+31	868	7681236849003338	Charifas_autogen/timestamp	30d6e1e82c374470
+31	868	7681236849003338	Charifas_autogen/mocs_compilation.cpp	30d6e1e82c374470
+31	868	7681236849003338	C:/Users/Jair S/Documents/Charifas/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/Charifas_autogen/timestamp	30d6e1e82c374470
+31	868	7681236849003338	C:/Users/Jair S/Documents/Charifas/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/Charifas_autogen/mocs_compilation.cpp	30d6e1e82c374470
+873	3719	7681236849960146	CMakeFiles/Charifas.dir/main.cpp.obj	9b31f6f260b56922
+869	3806	7681236849930070	CMakeFiles/Charifas.dir/Charifas_autogen/mocs_compilation.cpp.obj	e05a1a2244bd75af
+877	4013	7681236850015270	CMakeFiles/Charifas.dir/mainwindow.cpp.obj	60a7f8241c8356eb
+4013	4243	7681236881370705	Charifas.exe	38b2d7651de0fc65
