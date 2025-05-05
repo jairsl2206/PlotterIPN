@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(Charifas VERSION 0.1 LANGUAGES CXX)
+project(IPNPlotter VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -20,20 +20,20 @@ set(PROJECT_SOURCES
 )
 
 if(QT_VERSION VERSION_GREATER_EQUAL "6.0.0")
-    qt_add_executable(Charifas
+    qt_add_executable(IPNPlotter
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
 else()
     if(ANDROID)
-        add_library(Charifas SHARED ${PROJECT_SOURCES})
+        add_library(IPNPlotter SHARED ${PROJECT_SOURCES})
     else()
-        add_executable(Charifas ${PROJECT_SOURCES})
+        add_executable(IPNPlotter ${PROJECT_SOURCES})
     endif()
 endif()
 
 # Solo un bloque para linkear
-target_link_libraries(Charifas
+target_link_libraries(IPNPlotter
     PRIVATE
     Qt6::Core
     Qt6::Widgets
@@ -43,9 +43,9 @@ target_link_libraries(Charifas
 
 # Propiedades para bundle (macOS/iOS opcional)
 if(QT_VERSION VERSION_GREATER_EQUAL "6.0.0")
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.Charifas)
+  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.IPNPlotter)
 endif()
-set_target_properties(Charifas PROPERTIES
+set_target_properties(IPNPlotter PROPERTIES
     ${BUNDLE_ID_OPTION}
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -54,12 +54,12 @@ set_target_properties(Charifas PROPERTIES
 )
 
 include(GNUInstallDirs)
-install(TARGETS Charifas
+install(TARGETS IPNPlotter
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(Charifas)
+    qt_finalize_executable(IPNPlotter)
 endif()
