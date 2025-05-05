@@ -11,3 +11,4 @@ Los requisitos previos antes de querer cargar el proyecto son:
 Cumpliendo los requisitos el proyecto puede ser ejecutado tanto en ambiente windows como en linux.
 
 Actualmente este genera un chart con la graficación de 1000 puntos (configurable) que se recorren mientras se actualiza.
+![image](https://github.com/user-attachments/assets/73df2426-2ded-4d84-b7c4-5605801eb2c7)
