@@ -8,6 +8,8 @@ Los requisitos previos antes de querer cargar el proyecto son:
     SerialPort
     Charts
 
+Por el momento es requisito instalar también el QtDesigner en su última versión (Para no tener problemas con la declaración de ui)
+
 Cumpliendo los requisitos el proyecto puede ser ejecutado tanto en ambiente windows como en linux.
 
 Actualmente este genera un chart con la graficación de 1000 puntos (configurable) que se recorren mientras se actualiza.
