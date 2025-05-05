@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    serial->setPortName("COM3");  // <-- Ajusta esto al puerto de tu STM32
+    serial->setPortName("COM3");  // <-- Ajusta esto al puerto de tu STM32, "dmesg | grep tty" comando para obtener nombre del puerto en linux 
     serial->setBaudRate(QSerialPort::Baud9600);
     serial->setDataBits(QSerialPort::Data8);
     serial->setParity(QSerialPort::NoParity);
