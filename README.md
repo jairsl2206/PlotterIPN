@@ -4,6 +4,9 @@
 
 PlotterIPN es un graficador de señal continua desarrollado en Qt6 que permite visualizar datos en tiempo real leídos desde un puerto de comunicación serial de manera asíncrona. El proyecto está diseñado para aplicaciones de monitoreo y análisis de señales provenientes de dispositivos externos como microcontroladores, sensores o sistemas embebidos.
 
+![image](https://github.com/user-attachments/assets/40d9da2a-f3bd-482e-820e-9059944cc4f0)
+
+
 ![Qt6](https://img.shields.io/badge/Qt-6.9.0+-brightgreen)
 ![C++](https://img.shields.io/badge/C++-82.9%25-blue)
 ![CMake](https://img.shields.io/badge/CMake-17.1%25-red)
