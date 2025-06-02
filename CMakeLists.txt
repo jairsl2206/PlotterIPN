@@ -19,16 +19,29 @@ set(PROJECT_SOURCES
     mainwindow.ui
 )
 
+# Configuración específica para Windows (icono del ejecutable)
+if(WIN32)
+    set(WIN_RESOURCES app.rc)
+endif()
+
 if(QT_VERSION VERSION_GREATER_EQUAL "6.0.0")
     qt_add_executable(IPNPlotter
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        ${WIN_RESOURCES}
+    )
+
+    # Agregar recursos directamente sin archivo .qrc
+    qt_add_resources(IPNPlotter "app_resources"
+        PREFIX "/"
+        FILES
+            icons/app_icon.png
     )
 else()
     if(ANDROID)
-        add_library(IPNPlotter SHARED ${PROJECT_SOURCES})
+        add_library(IPNPlotter SHARED ${PROJECT_SOURCES} ${WIN_RESOURCES})
     else()
-        add_executable(IPNPlotter ${PROJECT_SOURCES})
+        add_executable(IPNPlotter ${PROJECT_SOURCES} ${WIN_RESOURCES})
     endif()
 endif()
 
@@ -45,6 +58,15 @@ target_link_libraries(IPNPlotter
 if(QT_VERSION VERSION_GREATER_EQUAL "6.0.0")
   set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.IPNPlotter)
 endif()
+
+# Configuración de icono para macOS
+if(APPLE)
+    set(MACOSX_BUNDLE_ICON_FILE app_icon.icns)
+    set_source_files_properties(icons/app_icon.icns PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources"
+    )
+endif()
+
 set_target_properties(IPNPlotter PROPERTIES
     ${BUNDLE_ID_OPTION}
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}

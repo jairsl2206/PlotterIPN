@@ -1,37 +1,85 @@
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
 #include <QMainWindow>
 #include <QSerialPort>
-#include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
+#include <QSerialPortInfo>
 #include <QtCharts/QChart>
+#include <QtCharts/QLineSeries>
 #include <QtCharts/QValueAxis>
+#include <QtCharts/QChartView>
+#include <QComboBox>
+#include <QSpinBox>
+#include <QPushButton>
+#include <QLabel>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
+#include <QGroupBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-//QT_CHARTS_USE_NAMESPACE
-
-class MainWindow : public QMainWindow {
+class MainWindow : public QMainWindow
+{
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
     void readSerialData();
+    void connectSerial();
+    void disconnectSerial();
+    void updateSerialSettings();
+    void refreshPorts();
+    void clearChart();
+
 
 private:
+    void setupUI();
+    void setupChart();
+    void setupSerialControls();
+    void updatePortList();
+
     Ui::MainWindow *ui;
+
+    // Serial communication
     QSerialPort *serial;
     QByteArray buffer;
 
-    QChart *chart;
+    // Chart components
     QLineSeries *series;
+    QChart *chart;
+    QChartView *chartView;
     QValueAxis *axisX;
     QValueAxis *axisY;
 
+    // Data management
     int x = 0;
+    int maxPoints = 1000;
+    int windowSize = 1000;
+
+    // UI Controls (accessible from .ui file)
+    QComboBox *portComboBox;
+    QComboBox *baudRateComboBox;
+    QComboBox *dataBitsComboBox;
+    QComboBox *parityComboBox;
+    QComboBox *stopBitsComboBox;
+    QSpinBox *maxPointsSpinBox;
+    QSpinBox *windowSizeSpinBox;
+    QSpinBox *minRangeSpinBox;
+    QSpinBox *maxRangeSpinBox;
+    QPushButton *connectButton;
+    QPushButton *disconnectButton;
+    QPushButton *refreshButton;
+    QPushButton *clearButton;
+    QLabel *statusLabel;
 };
 
 
+
+
+#endif // MAINWINDOW_H

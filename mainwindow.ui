@@ -6,35 +6,209 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1200</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>PlotterIPN - Graficador Serial</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="connectButton">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>121</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Conectar a STM32</string>
-    </property>
-   </widget>
+   <layout class="QHBoxLayout" name="horizontalLayout_main">
+    <item>
+     <widget class="QGroupBox" name="controlsGroupBox">
+      <property name="title">
+       <string>Configuración</string>
+      </property>
+      <property name="maximumWidth">
+       <number>300</number>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_controls">
+       <item>
+        <widget class="QGroupBox" name="serialGroupBox">
+         <property name="title">
+          <string>Puerto Serial</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_serial">
+          <item row="0" column="0">
+           <widget class="QLabel" name="portLabel">
+            <property name="text">
+             <string>Puerto:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="portComboBox"/>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="refreshButton">
+            <property name="text">
+             <string>↻</string>
+            </property>
+            <property name="maximumWidth">
+             <number>30</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="baudRateLabel">
+            <property name="text">
+             <string>Baudrate:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" colspan="2">
+           <widget class="QComboBox" name="baudRateComboBox"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="dataBitsLabel">
+            <property name="text">
+             <string>Bits datos:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" colspan="2">
+           <widget class="QComboBox" name="dataBitsComboBox"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="parityLabel">
+            <property name="text">
+             <string>Paridad:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" colspan="2">
+           <widget class="QComboBox" name="parityComboBox"/>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="stopBitsLabel">
+            <property name="text">
+             <string>Bits parada:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1" colspan="2">
+           <widget class="QComboBox" name="stopBitsComboBox"/>
+          </item>
+          <item row="5" column="0" colspan="3">
+           <layout class="QHBoxLayout" name="horizontalLayout_buttons">
+            <item>
+             <widget class="QPushButton" name="connectButton">
+              <property name="text">
+               <string>Conectar</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="disconnectButton">
+              <property name="text">
+               <string>Desconectar</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="chartGroupBox">
+         <property name="title">
+          <string>Configuración del Gráfico</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_chart">
+          <item row="0" column="0">
+           <widget class="QLabel" name="maxPointsLabel">
+            <property name="text">
+             <string>Máx. puntos:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="maxPointsSpinBox"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="windowSizeLabel">
+            <property name="text">
+             <string>Ventana:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="windowSizeSpinBox"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="minRangeLabel">
+            <property name="text">
+             <string>Rango mín:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="minRangeSpinBox"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="maxRangeLabel">
+            <property name="text">
+             <string>Rango máx:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="maxRangeSpinBox"/>
+          </item>
+          <item row="4" column="0" colspan="2">
+           <widget class="QPushButton" name="clearButton">
+            <property name="text">
+             <string>Limpiar Gráfico</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="statusLabel">
+         <property name="text">
+          <string>Estado: Desconectado</string>
+         </property>
+         <property name="styleSheet">
+          <string>QLabel { padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc; }</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="chartWidget" native="true">
+      <property name="styleSheet">
+       <string>QWidget { border: 1px solid #ccc; }</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>21</height>
+     <width>1200</width>
+     <height>22</height>
     </rect>
    </property>
   </widget>
