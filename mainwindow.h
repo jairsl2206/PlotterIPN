@@ -16,6 +16,7 @@
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QGroupBox>
+#include <QList>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -51,7 +52,7 @@ private:
     QByteArray buffer;
 
     // Chart components
-    QLineSeries *series;
+    QList<QLineSeries *> seriesList;
     QChart *chart;
     QChartView *chartView;
     QValueAxis *axisX;
@@ -61,6 +62,7 @@ private:
     int x = 0;
     int maxPoints = 1000;
     int windowSize = 1000;
+    int channelCount = 0;
 
     // UI Controls (accessible from .ui file)
     QComboBox *portComboBox;

@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QMessageBox>
+#include <QColor>
+#include <QRegularExpression>
+#include <QPen>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -73,10 +76,8 @@ void MainWindow::setupUI() {
 
 void MainWindow::setupChart() {
     // Configuración del gráfico
-    series = new QLineSeries();
     chart = new QChart();
-    chart->legend()->hide();
-    chart->addSeries(series);
+    chart->legend()->show();
     chart->setTitle("Datos Serial en Tiempo Real");
 
     axisX = new QValueAxis();
@@ -84,13 +85,11 @@ void MainWindow::setupChart() {
     axisX->setLabelFormat("%d");
     axisX->setTitleText("Tiempo");
     chart->addAxis(axisX, Qt::AlignBottom);
-    series->attachAxis(axisX);
 
     axisY = new QValueAxis();
     axisY->setRange(0, 4095);
     axisY->setTitleText("Valor");
     chart->addAxis(axisY, Qt::AlignLeft);
-    series->attachAxis(axisY);
 
     chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
@@ -196,7 +195,9 @@ void MainWindow::disconnectSerial() {
 }
 
 void MainWindow::clearChart() {
-    series->clear();
+    for (auto *s : seriesList) {
+        s->clear();
+    }
     x = 0;
     axisX->setRange(0, windowSize);
 }
@@ -210,25 +211,47 @@ void MainWindow::readSerialData() {
         QByteArray line = buffer.left(index).trimmed();
         buffer.remove(0, index + 1);
 
-        bool ok;
-        int value = line.toInt(&ok);
-        if (ok) {
-            qDebug() << "Valor recibido:" << value;
-            series->append(x++, value);
-
-            if (series->count() > maxPoints) {
-                QList<QPointF> puntos = series->points();
-                puntos.removeFirst();
-                series->replace(puntos);
+        QRegularExpression re(QStringLiteral(R"([,;\s]+)"));
+        QStringList values = QString::fromUtf8(line).split(re, Qt::SkipEmptyParts);
+        if (seriesList.isEmpty()) {
+            channelCount = values.size();
+            for (int i = 0; i < channelCount; ++i) {
+                auto *s = new QLineSeries();
+                s->setName(QString("Canal %1").arg(i + 1));
+                QColor color = QColor::fromHsv((i * 70) % 360, 200, 250);
+                QPen pen(color);
+                pen.setWidth(2);
+                s->setPen(pen);
+                chart->addSeries(s);
+                s->attachAxis(axisX);
+                s->attachAxis(axisY);
+                seriesList.append(s);
             }
-
-            if (x > windowSize)
-                axisX->setRange(x - windowSize, x);
-            else
-                axisX->setRange(0, windowSize);
-        } else {
-            qDebug() << "Error de conversión para:" << line;
         }
+
+        if (values.size() != channelCount) {
+            qDebug() << "Numero de valores inesperado:" << values;
+            continue;
+        }
+
+        for (int i = 0; i < channelCount; ++i) {
+            bool ok;
+            int value = values.at(i).toInt(&ok);
+            if (ok) {
+                seriesList[i]->append(x, value);
+                if (seriesList[i]->count() > maxPoints) {
+                    QList<QPointF> puntos = seriesList[i]->points();
+                    puntos.removeFirst();
+                    seriesList[i]->replace(puntos);
+                }
+            }
+        }
+
+        x++;
+        if (x > windowSize)
+            axisX->setRange(x - windowSize, x);
+        else
+            axisX->setRange(0, windowSize);
     }
 }
 

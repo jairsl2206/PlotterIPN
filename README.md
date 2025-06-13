@@ -43,6 +43,7 @@ PlotterIPN/
 - **Graficación Continua:** Visualización de hasta 1000 puntos de datos (configurable)
 - **Actualización Dinámica:** Los datos se desplazan mientras se actualiza la gráfica
 - **Interfaz Responsive:** Ventana principal con controles intuitivos
+- **Múltiples Canales:** Soporta tramas con varios valores separados por coma, graficando cada canal con una línea distinta
 
 ### Comunicación Serial
 - **Protocolo Asíncrono:** Lectura no bloqueante desde puerto serial
@@ -281,7 +282,7 @@ chmod +x .githooks/pre-commit
 - **Testing:** Unit tests usando Qt Test Framework
 
 ### Roadmap de Desarrollo
-- [ ] Soporte para múltiples canales simultáneos
+- [x] Soporte para múltiples canales simultáneos
 - [ ] Exportación de datos a CSV/Excel
 - [ ] Filtros digitales configurables
 - [ ] Análisis espectral (FFT)
