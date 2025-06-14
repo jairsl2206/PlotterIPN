@@ -85,3 +85,6 @@ install(TARGETS IPNPlotter
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(IPNPlotter)
 endif()
+
+enable_testing()
+add_subdirectory(tests)
