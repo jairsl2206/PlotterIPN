@@ -32,7 +32,7 @@ PlotterIPN/
 ├── CMakeLists.txt         # Configuración de compilación
 ├── app.rc                 # Recursos de Windows
 ├── plotter_icon.png       # Icono de la aplicación
-├── resouces.qrc          # Archivo de recursos Qt
+├── resources.qrc          # Archivo de recursos Qt
 ├── .gitignore            # Archivos ignorados por Git
 └── README.md             # Documentación básica
 ```
