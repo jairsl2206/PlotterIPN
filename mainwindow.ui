@@ -168,6 +168,46 @@
         </widget>
        </item>
        <item>
+        <widget class="QGroupBox" name="filterGroupBox">
+         <property name="title">
+          <string>Filtros Digitales</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_filter">
+          <item row="0" column="0">
+           <widget class="QLabel" name="filterTypeLabel">
+            <property name="text">
+             <string>Tipo:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="filterTypeComboBox">
+            <item>
+             <property name="text">
+              <string>Ninguno</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Promedio Móvil</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="filterSizeLabel">
+            <property name="text">
+             <string>Tamaño:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="filterSizeSpinBox"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

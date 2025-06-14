@@ -5,6 +5,7 @@
 #include <QColor>
 #include <QRegularExpression>
 #include <QPen>
+#include <numeric>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -35,6 +36,8 @@ void MainWindow::setupUI() {
     windowSizeSpinBox = ui->windowSizeSpinBox;
     minRangeSpinBox = ui->minRangeSpinBox;
     maxRangeSpinBox = ui->maxRangeSpinBox;
+    filterTypeComboBox = ui->filterTypeComboBox;
+    filterSizeSpinBox = ui->filterSizeSpinBox;
     connectButton = ui->connectButton;
     disconnectButton = ui->disconnectButton;
     refreshButton = ui->refreshButton;
@@ -54,6 +57,9 @@ void MainWindow::setupUI() {
     maxRangeSpinBox->setRange(0, 10000);
     maxRangeSpinBox->setValue(4095);
 
+    filterSizeSpinBox->setRange(1, 100);
+    filterSizeSpinBox->setValue(1);
+
     // Conectar señales
     connect(connectButton, &QPushButton::clicked, this, &MainWindow::connectSerial);
     connect(disconnectButton, &QPushButton::clicked, this, &MainWindow::disconnectSerial);
@@ -68,6 +74,21 @@ void MainWindow::setupUI() {
             [this](int value) { axisY->setMin(value); });
     connect(maxRangeSpinBox, QOverload<int>::of(&QSpinBox::valueChanged),
             [this](int value) { axisY->setMax(value); });
+
+    connect(filterTypeComboBox, &QComboBox::currentTextChanged, [this](const QString &text) {
+        if (text == "Promedio Móvil")
+            filterType = FilterType::MovingAverage;
+        else
+            filterType = FilterType::None;
+        for (auto &buf : filterBuffers)
+            buf.clear();
+    });
+    connect(filterSizeSpinBox, QOverload<int>::of(&QSpinBox::valueChanged),
+            [this](int value) {
+                filterWindowSize = value;
+                for (auto &buf : filterBuffers)
+                    buf.clear();
+            });
 
     // Estado inicial
     disconnectButton->setEnabled(false);
@@ -198,6 +219,9 @@ void MainWindow::clearChart() {
     for (auto *s : seriesList) {
         s->clear();
     }
+    for (auto &buf : filterBuffers) {
+        buf.clear();
+    }
     x = 0;
     axisX->setRange(0, windowSize);
 }
@@ -226,6 +250,7 @@ void MainWindow::readSerialData() {
                 s->attachAxis(axisX);
                 s->attachAxis(axisY);
                 seriesList.append(s);
+                filterBuffers.append(QQueue<int>());
             }
         }
 
@@ -238,7 +263,16 @@ void MainWindow::readSerialData() {
             bool ok;
             int value = values.at(i).toInt(&ok);
             if (ok) {
-                seriesList[i]->append(x, value);
+                int outValue = value;
+                if (filterType == FilterType::MovingAverage) {
+                    QQueue<int> &buf = filterBuffers[i];
+                    buf.enqueue(value);
+                    if (buf.size() > filterWindowSize)
+                        buf.dequeue();
+                    int sum = std::accumulate(buf.constBegin(), buf.constEnd(), 0);
+                    outValue = sum / buf.size();
+                }
+                seriesList[i]->append(x, outValue);
                 if (seriesList[i]->count() > maxPoints) {
                     QList<QPointF> puntos = seriesList[i]->points();
                     puntos.removeFirst();
