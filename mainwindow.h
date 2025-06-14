@@ -16,6 +16,7 @@
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QGroupBox>
+#include <QQueue>
 #include <QList>
 
 QT_BEGIN_NAMESPACE
@@ -58,6 +59,11 @@ private:
     QValueAxis *axisX;
     QValueAxis *axisY;
 
+    enum class FilterType { None, MovingAverage };
+    FilterType filterType = FilterType::None;
+    int filterWindowSize = 1;
+    QList<QQueue<int>> filterBuffers;
+
     // Data management
     int x = 0;
     int maxPoints = 1000;
@@ -74,6 +80,8 @@ private:
     QSpinBox *windowSizeSpinBox;
     QSpinBox *minRangeSpinBox;
     QSpinBox *maxRangeSpinBox;
+    QComboBox *filterTypeComboBox;
+    QSpinBox *filterSizeSpinBox;
     QPushButton *connectButton;
     QPushButton *disconnectButton;
     QPushButton *refreshButton;
