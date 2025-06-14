@@ -222,6 +222,7 @@ void MainWindow::clearChart() {
     for (auto &buf : filterBuffers) {
         buf.clear();
     }
+    buffer.clear();
     x = 0;
     axisX->setRange(0, windowSize);
 }
