@@ -45,6 +45,7 @@ private:
     void setupChart();
     void setupSerialControls();
     void updatePortList();
+    void adjustChannelCount(int newCount);
 
     Ui::MainWindow *ui;
 

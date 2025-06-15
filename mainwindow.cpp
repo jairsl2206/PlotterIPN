@@ -238,26 +238,10 @@ void MainWindow::readSerialData() {
 
         QRegularExpression re(QStringLiteral(R"([,;\s]+)"));
         QStringList values = QString::fromUtf8(line).split(re, Qt::SkipEmptyParts);
-        if (seriesList.isEmpty()) {
-            channelCount = values.size();
-            for (int i = 0; i < channelCount; ++i) {
-                auto *s = new QLineSeries();
-                s->setName(QString("Canal %1").arg(i + 1));
-                QColor color = QColor::fromHsv((i * 70) % 360, 200, 250);
-                QPen pen(color);
-                pen.setWidth(2);
-                s->setPen(pen);
-                chart->addSeries(s);
-                s->attachAxis(axisX);
-                s->attachAxis(axisY);
-                seriesList.append(s);
-                filterBuffers.append(QQueue<int>());
-            }
-        }
-
-        if (values.size() != channelCount) {
-            qDebug() << "Numero de valores inesperado:" << values;
-            continue;
+        if (seriesList.isEmpty() || values.size() != channelCount) {
+            adjustChannelCount(values.size());
+            if (values.size() != channelCount)
+                continue;
         }
 
         for (int i = 0; i < channelCount; ++i) {
@@ -303,4 +287,35 @@ void MainWindow::updateSerialSettings() {
 
     // Aquí puedes agregar lógica adicional si necesitas
     // actualizar algo cuando cambien las configuraciones
+}
+
+void MainWindow::adjustChannelCount(int newCount) {
+    if (newCount <= 0 || newCount == channelCount)
+        return;
+
+    if (newCount < channelCount) {
+        while (seriesList.size() > newCount) {
+            QLineSeries *s = seriesList.takeLast();
+            chart->removeSeries(s);
+            delete s;
+            filterBuffers.removeLast();
+        }
+    } else {
+        for (int i = channelCount; i < newCount; ++i) {
+            auto *s = new QLineSeries();
+            s->setName(QString("Canal %1").arg(i + 1));
+            QColor color = QColor::fromHsv((i * 70) % 360, 200, 250);
+            QPen pen(color);
+            pen.setWidth(2);
+            s->setPen(pen);
+            chart->addSeries(s);
+            s->attachAxis(axisX);
+            s->attachAxis(axisY);
+            seriesList.append(s);
+            filterBuffers.append(QQueue<int>());
+        }
+    }
+
+    channelCount = newCount;
+    clearChart();
 }
