@@ -46,10 +46,10 @@ void MainWindow::setupUI() {
 
     // Configurar valores iniciales
     maxPointsSpinBox->setRange(100, 10000);
-    maxPointsSpinBox->setValue(1000);
+    maxPointsSpinBox->setValue(500);
 
     windowSizeSpinBox->setRange(100, 5000);
-    windowSizeSpinBox->setValue(1000);
+    windowSizeSpinBox->setValue(500);
 
     minRangeSpinBox->setRange(0, 10000);
     minRangeSpinBox->setValue(0);
@@ -125,7 +125,7 @@ void MainWindow::setupSerialControls() {
     // Configurar baudrates
     QStringList baudRates = {"1200", "2400", "4800", "9600", "19200", "38400", "57600", "115200"};
     baudRateComboBox->addItems(baudRates);
-    baudRateComboBox->setCurrentText("9600");
+    baudRateComboBox->setCurrentText("115200");
 
     // Configurar bits de datos
     QStringList dataBits = {"5", "6", "7", "8"};
