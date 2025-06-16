@@ -6,6 +6,11 @@
 #include <QRegularExpression>
 #include <QPen>
 #include <numeric>
+#include <complex>
+#include <cmath>
+#include <algorithm>
+#include <complex>
+#include <cmath>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -119,6 +124,32 @@ void MainWindow::setupChart() {
     QVBoxLayout *chartLayout = new QVBoxLayout(ui->chartWidget);
     chartLayout->addWidget(chartView);
     ui->chartWidget->setLayout(chartLayout);
+
+    // Configuración del gráfico de FFT
+    fftSeries = new QLineSeries();
+    fftSeries->setName("FFT");
+    fftChart = new QChart();
+    fftChart->addSeries(fftSeries);
+    fftChart->setTitle("Magnitud en Frecuencia");
+
+    fftAxisX = new QValueAxis();
+    fftAxisX->setTitleText("Bin");
+    fftAxisX->setRange(0, windowSize / 2);
+    fftChart->addAxis(fftAxisX, Qt::AlignBottom);
+    fftSeries->attachAxis(fftAxisX);
+
+    fftAxisY = new QValueAxis();
+    fftAxisY->setTitleText("Magnitud");
+    fftAxisY->setRange(0, 1000);
+    fftChart->addAxis(fftAxisY, Qt::AlignLeft);
+    fftSeries->attachAxis(fftAxisY);
+
+    fftChartView = new QChartView(fftChart);
+    fftChartView->setRenderHint(QPainter::Antialiasing);
+
+    QVBoxLayout *fftLayout = new QVBoxLayout(ui->fftChartWidget);
+    fftLayout->addWidget(fftChartView);
+    ui->fftChartWidget->setLayout(fftLayout);
 }
 
 void MainWindow::setupSerialControls() {
@@ -263,6 +294,11 @@ void MainWindow::readSerialData() {
                     puntos.removeFirst();
                     seriesList[i]->replace(puntos);
                 }
+                if (i == 0) {
+                    samplesBuffer.append(outValue);
+                    if (samplesBuffer.size() > windowSize)
+                        samplesBuffer.removeFirst();
+                }
             }
         }
 
@@ -271,6 +307,8 @@ void MainWindow::readSerialData() {
             axisX->setRange(x - windowSize, x);
         else
             axisX->setRange(0, windowSize);
+
+        updateFFTView();
     }
 }
 
@@ -318,4 +356,32 @@ void MainWindow::adjustChannelCount(int newCount) {
 
     channelCount = newCount;
     clearChart();
+}
+
+QVector<double> MainWindow::computeFFT(const QVector<double> &samples) {
+    int N = samples.size();
+    QVector<double> mags(N / 2);
+    for (int k = 0; k < N / 2; ++k) {
+        std::complex<double> sum(0.0, 0.0);
+        for (int n = 0; n < N; ++n) {
+            double angle = -2.0 * 3.14159265358979323846 * k * n / N;
+            std::complex<double> expv(std::cos(angle), std::sin(angle));
+            sum += samples[n] * expv;
+        }
+        mags[k] = std::abs(sum);
+    }
+    return mags;
+}
+
+void MainWindow::updateFFTView() {
+    if (samplesBuffer.size() < 2)
+        return;
+    QVector<double> mags = computeFFT(samplesBuffer);
+    fftSeries->clear();
+    for (int i = 0; i < mags.size(); ++i) {
+        fftSeries->append(i, mags[i]);
+    }
+    fftAxisX->setRange(0, mags.size());
+    double maxMag = *std::max_element(mags.constBegin(), mags.constEnd());
+    fftAxisY->setRange(0, maxMag);
 }

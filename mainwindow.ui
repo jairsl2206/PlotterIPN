@@ -234,10 +234,38 @@
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="chartWidget" native="true">
-      <property name="styleSheet">
-       <string>QWidget { border: 1px solid #ccc; }</string>
+     <widget class="QTabWidget" name="viewTabWidget">
+      <property name="currentIndex">
+       <number>0</number>
       </property>
+      <widget class="QWidget" name="timeTab">
+       <attribute name="title">
+        <string>Tiempo</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_time">
+        <item>
+         <widget class="QWidget" name="chartWidget" native="true">
+          <property name="styleSheet">
+           <string>QWidget { border: 1px solid #ccc; }</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="freqTab">
+       <attribute name="title">
+        <string>Frecuencia</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_freq">
+        <item>
+         <widget class="QWidget" name="fftChartWidget" native="true">
+          <property name="styleSheet">
+           <string>QWidget { border: 1px solid #ccc; }</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
