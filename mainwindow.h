@@ -18,6 +18,7 @@
 #include <QGroupBox>
 #include <QQueue>
 #include <QList>
+#include <QVector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -38,11 +39,13 @@ private slots:
     void updateSerialSettings();
     void refreshPorts();
     void clearChart();
+    void updateFFTView();
 
 
 private:
     void setupUI();
     void setupChart();
+    QVector<double> computeFFT(const QVector<double> &samples);
     void setupSerialControls();
     void updatePortList();
     void adjustChannelCount(int newCount);
@@ -59,6 +62,11 @@ private:
     QChartView *chartView;
     QValueAxis *axisX;
     QValueAxis *axisY;
+    QLineSeries *fftSeries;
+    QChart *fftChart;
+    QChartView *fftChartView;
+    QValueAxis *fftAxisX;
+    QValueAxis *fftAxisY;
 
     enum class FilterType { None, MovingAverage };
     FilterType filterType = FilterType::None;
@@ -70,6 +78,7 @@ private:
     int maxPoints = 1000;
     int windowSize = 1000;
     int channelCount = 0;
+    QVector<double> samplesBuffer;
 
     // UI Controls (accessible from .ui file)
     QComboBox *portComboBox;

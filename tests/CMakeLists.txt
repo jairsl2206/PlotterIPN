@@ -19,3 +19,13 @@ target_link_libraries(test_clearChart
 
 add_test(NAME test_clearChart COMMAND test_clearChart)
 set_tests_properties(test_clearChart PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+
+add_executable(test_fft
+    test_fft.cpp
+    ${PROJECT_SOURCE_DIR}/mainwindow.cpp
+    ${PROJECT_SOURCE_DIR}/mainwindow.h
+)
+target_include_directories(test_fft PRIVATE ${PROJECT_SOURCE_DIR})
+target_link_libraries(test_fft PRIVATE Qt6::Core Qt6::Widgets Qt6::Test Qt6::SerialPort Qt6::Charts)
+add_test(NAME test_fft COMMAND test_fft)
+set_tests_properties(test_fft PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
