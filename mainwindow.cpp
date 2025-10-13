@@ -139,7 +139,7 @@ void MainWindow::setupSerialControls() {
     // Configurar baudrates
     QStringList baudRates = {"1200", "2400", "4800", "9600", "19200", "38400", "57600", "115200"};
     baudRateComboBox->addItems(baudRates);
-    baudRateComboBox->setCurrentText("9600");
+    baudRateComboBox->setCurrentText("115200");
 
     // Configurar bits de datos
     QStringList dataBits = {"5", "6", "7", "8"};
@@ -326,7 +326,7 @@ void MainWindow::adjustChannelCount(int newCount) {
             s->setName(QString("Canal %1").arg(i + 1));
             QColor color = QColor::fromHsv((i * 70) % 360, 200, 250);
             QPen pen(color);
-            pen.setWidth(widthPen->value());
+            pen.setWidth(2);
             s->setPen(pen);
             chart->addSeries(s);
             s->attachAxis(axisX);
@@ -339,4 +339,3 @@ void MainWindow::adjustChannelCount(int newCount) {
     channelCount = newCount;
     clearChart();
 }
-

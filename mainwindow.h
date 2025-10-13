@@ -44,7 +44,7 @@ private:
     void setupChart();
     void setupSerialControls();
     void updatePortList();
-    void adjustChannelCount(int);
+    void adjustChannelCount(int newCount);
 
     Ui::MainWindow *ui;
 
@@ -90,7 +90,4 @@ private:
     QLabel *statusLabel;
 };
 
-
-
-
-#endif // MAINWINDOW_H
+#endif
