@@ -43,13 +43,14 @@ void MainWindow::setupUI() {
     refreshButton = ui->refreshButton;
     clearButton = ui->clearButton;
     statusLabel = ui->statusLabel;
+    widthPen = ui->widthPen;
 
     // Configurar valores iniciales
     maxPointsSpinBox->setRange(100, 10000);
-    maxPointsSpinBox->setValue(1000);
+    maxPointsSpinBox->setValue(500);
 
     windowSizeSpinBox->setRange(100, 5000);
-    windowSizeSpinBox->setValue(1000);
+    windowSizeSpinBox->setValue(500);
 
     minRangeSpinBox->setRange(0, 10000);
     minRangeSpinBox->setValue(0);
@@ -59,6 +60,9 @@ void MainWindow::setupUI() {
 
     filterSizeSpinBox->setRange(1, 100);
     filterSizeSpinBox->setValue(1);
+
+    widthPen->setRange(0, 10);
+    widthPen->setValue(2);
 
     // Conectar señales
     connect(connectButton, &QPushButton::clicked, this, &MainWindow::connectSerial);
@@ -90,9 +94,19 @@ void MainWindow::setupUI() {
                     buf.clear();
             });
 
+    connect(widthPen, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::updatePenWidth);
+
     // Estado inicial
     disconnectButton->setEnabled(false);
     statusLabel->setText("Desconectado");
+}
+
+void MainWindow::updatePenWidth(int newWidth) {
+    for (auto* series : seriesList) {
+        QPen pen = series->pen();
+        pen.setWidth(newWidth);
+        series->setPen(pen);
+    }
 }
 
 void MainWindow::setupChart() {
@@ -238,6 +252,11 @@ void MainWindow::readSerialData() {
 
         QRegularExpression re(QStringLiteral(R"([,;\s]+)"));
         QStringList values = QString::fromUtf8(line).split(re, Qt::SkipEmptyParts);
+        if (seriesList.isEmpty() || values.size() != channelCount) {
+            adjustChannelCount(values.size());
+            if (values.size() != channelCount)
+                continue;
+        }
         if (seriesList.isEmpty()) {
             channelCount = values.size();
             for (int i = 0; i < channelCount; ++i) {
@@ -245,7 +264,7 @@ void MainWindow::readSerialData() {
                 s->setName(QString("Canal %1").arg(i + 1));
                 QColor color = QColor::fromHsv((i * 70) % 360, 200, 250);
                 QPen pen(color);
-                pen.setWidth(2);
+                pen.setWidth(widthPen->value());
                 s->setPen(pen);
                 chart->addSeries(s);
                 s->attachAxis(axisX);
@@ -290,17 +309,34 @@ void MainWindow::readSerialData() {
     }
 }
 
-void MainWindow::updateSerialSettings() {
-    // Esta función se puede usar para actualizar configuraciones
-    // cuando cambien los valores en los controles de la UI
+void MainWindow::adjustChannelCount(int newCount) {
+    if (newCount <= 0 || newCount == channelCount)
+        return;
 
-    // Ejemplo de implementación:
-    if (serial->isOpen()) {
-        // Si el puerto está abierto, mostrar advertencia sobre cambios
-        QMessageBox::information(this, "Información",
-                                 "Los cambios en la configuración serial se aplicarán en la próxima conexión.");
+    if (newCount < channelCount) {
+        while (seriesList.size() > newCount) {
+            QLineSeries *s = seriesList.takeLast();
+            chart->removeSeries(s);
+            delete s;
+            filterBuffers.removeLast();
+        }
+    } else {
+        for (int i = channelCount; i < newCount; ++i) {
+            auto *s = new QLineSeries();
+            s->setName(QString("Canal %1").arg(i + 1));
+            QColor color = QColor::fromHsv((i * 70) % 360, 200, 250);
+            QPen pen(color);
+            pen.setWidth(widthPen->value());
+            s->setPen(pen);
+            chart->addSeries(s);
+            s->attachAxis(axisX);
+            s->attachAxis(axisY);
+            seriesList.append(s);
+            filterBuffers.append(QQueue<int>());
+        }
     }
 
-    // Aquí puedes agregar lógica adicional si necesitas
-    // actualizar algo cuando cambien las configuraciones
+    channelCount = newCount;
+    clearChart();
 }
+

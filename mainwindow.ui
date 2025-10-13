@@ -157,7 +157,17 @@
           <item row="3" column="1">
            <widget class="QSpinBox" name="maxRangeSpinBox"/>
           </item>
-          <item row="4" column="0" colspan="2">
+        <item row="4" column="0">
+        <widget class="QLabel" name="widthPenLabel">
+        <property name="text">
+        <string>Grosor:</string>
+        </property>
+        </widget>
+        </item>
+        <item row="4" column="1">
+        <widget class="QSpinBox" name="widthPen"/>
+        </item>
+          <item row="5" column="0" colspan="2">
            <widget class="QPushButton" name="clearButton">
             <property name="text">
              <string>Limpiar Gráfico</string>

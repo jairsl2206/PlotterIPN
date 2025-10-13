@@ -35,16 +35,16 @@ private slots:
     void readSerialData();
     void connectSerial();
     void disconnectSerial();
-    void updateSerialSettings();
     void refreshPorts();
     void clearChart();
-
+    void updatePenWidth(int newWidth);
 
 private:
     void setupUI();
     void setupChart();
     void setupSerialControls();
     void updatePortList();
+    void adjustChannelCount(int);
 
     Ui::MainWindow *ui;
 
@@ -66,8 +66,8 @@ private:
 
     // Data management
     int x = 0;
-    int maxPoints = 1000;
-    int windowSize = 1000;
+    int maxPoints = 500;
+    int windowSize = 500;
     int channelCount = 0;
 
     // UI Controls (accessible from .ui file)
@@ -80,6 +80,7 @@ private:
     QSpinBox *windowSizeSpinBox;
     QSpinBox *minRangeSpinBox;
     QSpinBox *maxRangeSpinBox;
+    QSpinBox *widthPen;
     QComboBox *filterTypeComboBox;
     QSpinBox *filterSizeSpinBox;
     QPushButton *connectButton;
